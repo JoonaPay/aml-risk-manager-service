@@ -5,26 +5,22 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { TerminusModule } from '@nestjs/terminus';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-// AML Module imports
+// DDD Module imports
+import { UserModule } from './modules/user/user.module';
+import { AmlAlertModule } from './modules/aml-alert/aml-alert.module';
 import { AMLModule } from './modules/aml/aml.module';
+
+// ORM Entities from DDD modules
+import { OrmEntities as UserOrmEntities } from './modules/user/infrastructure/orm-entities';
+import { OrmEntities as AmlAlertOrmEntities } from './modules/aml-alert/infrastructure/orm-entities';
 
 // Shared modules
 import { ConfigurationModule } from './shared/config/configuration.module';
 import { HealthModule } from './shared/health/health.module';
 import { MetricsModule } from './shared/metrics/metrics.module';
-import { KafkaModule } from './shared/kafka/kafka.module';
-
-// ORM Entities
-import {
-  RiskProfileOrmEntity,
-  AmlAlertOrmEntity,
-  TransactionMonitoringRuleOrmEntity,
-  MlModelOrmEntity,
-} from './modules/aml/infrastructure/orm-entities';
 
 @Module({
   imports: [
@@ -33,7 +29,7 @@ import {
       isGlobal: true,
       envFilePath: ['.env.local', '.env'],
     }),
-    
+
     // Database
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -46,10 +42,8 @@ import {
         password: configService.get('DB_PASSWORD', 'password'),
         database: configService.get('DB_NAME', 'aml_risk_manager'),
         entities: [
-          RiskProfileOrmEntity,
-          AmlAlertOrmEntity,
-          TransactionMonitoringRuleOrmEntity,
-          MlModelOrmEntity,
+          ...UserOrmEntities,
+          ...AmlAlertOrmEntities,
         ],
         migrations: ['dist/migrations/*{.ts,.js}'],
         migrationsRun: configService.get('NODE_ENV') !== 'production',
@@ -87,10 +81,14 @@ import {
     ConfigurationModule,
     HealthModule,
     MetricsModule,
-    KafkaModule,
+    // KafkaModule,
 
     // Business modules
     AMLModule,
+
+    // DDD CQRS Modules
+    UserModule,
+    AmlAlertModule,
   ],
   controllers: [AppController],
   providers: [AppService],

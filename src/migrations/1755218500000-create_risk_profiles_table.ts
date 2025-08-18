@@ -210,56 +210,21 @@ export class CreateRiskProfilesTable1755218500000 implements MigrationInterface 
             default: "CURRENT_TIMESTAMP",
           },
         ],
-        indices: [
-          new Index({
-            name: "IDX_RISK_PROFILES_ENTITY_ID",
-            columnNames: ["entity_id"],
-            isUnique: true,
-          }),
-          new Index({
-            name: "IDX_RISK_PROFILES_ENTITY_TYPE",
-            columnNames: ["entity_type"],
-          }),
-          new Index({
-            name: "IDX_RISK_PROFILES_RISK_LEVEL",
-            columnNames: ["risk_level"],
-          }),
-          new Index({
-            name: "IDX_RISK_PROFILES_OVERALL_SCORE",
-            columnNames: ["overall_risk_score"],
-          }),
-          new Index({
-            name: "IDX_RISK_PROFILES_CUSTOMER_TYPE",
-            columnNames: ["customer_type"],
-          }),
-          new Index({
-            name: "IDX_RISK_PROFILES_PEP_STATUS",
-            columnNames: ["pep_status"],
-          }),
-          new Index({
-            name: "IDX_RISK_PROFILES_SANCTIONS_HIT",
-            columnNames: ["sanctions_hit"],
-          }),
-          new Index({
-            name: "IDX_RISK_PROFILES_REGULATORY_STATUS",
-            columnNames: ["regulatory_status"],
-          }),
-          new Index({
-            name: "IDX_RISK_PROFILES_NEXT_ASSESSMENT",
-            columnNames: ["next_assessment_date"],
-          }),
-          new Index({
-            name: "IDX_RISK_PROFILES_MONITORING",
-            columnNames: ["monitoring_enabled"],
-          }),
-          new Index({
-            name: "IDX_RISK_PROFILES_CREATED_AT",
-            columnNames: ["created_at"],
-          }),
-        ],
       }),
       true,
     );
+
+    // Create indices using SQL for now to avoid TypeScript issues
+    await queryRunner.query(`CREATE UNIQUE INDEX "IDX_RISK_PROFILES_ENTITY_ID" ON "risk_profiles" ("entity_id")`);
+    await queryRunner.query(`CREATE INDEX "IDX_RISK_PROFILES_ENTITY_TYPE" ON "risk_profiles" ("entity_type")`);
+    await queryRunner.query(`CREATE INDEX "IDX_RISK_PROFILES_RISK_LEVEL" ON "risk_profiles" ("risk_level")`);
+    await queryRunner.query(`CREATE INDEX "IDX_RISK_PROFILES_OVERALL_SCORE" ON "risk_profiles" ("overall_risk_score")`);
+    await queryRunner.query(`CREATE INDEX "IDX_RISK_PROFILES_CUSTOMER_TYPE" ON "risk_profiles" ("customer_type")`);
+    await queryRunner.query(`CREATE INDEX "IDX_RISK_PROFILES_PEP_STATUS" ON "risk_profiles" ("pep_status")`);
+    await queryRunner.query(`CREATE INDEX "IDX_RISK_PROFILES_SANCTIONS_HIT" ON "risk_profiles" ("sanctions_hit")`);
+    await queryRunner.query(`CREATE INDEX "IDX_RISK_PROFILES_REGULATORY_STATUS" ON "risk_profiles" ("regulatory_status")`);
+    await queryRunner.query(`CREATE INDEX "IDX_RISK_PROFILES_NEXT_ASSESSMENT" ON "risk_profiles" ("next_assessment_date")`);
+    await queryRunner.query(`CREATE INDEX "IDX_RISK_PROFILES_CREATED_AT" ON "risk_profiles" ("created_at")`);
 
     // Create trigger for updated_at
     await queryRunner.query(`
