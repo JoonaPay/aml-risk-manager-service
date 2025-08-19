@@ -3,6 +3,66 @@ import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
 
+// External API Interfaces
+interface SanctionsAPIResult {
+  id: string;
+  caption: string;
+  score?: number;
+  datasets?: string[];
+  schema?: string;
+  last_seen?: string;
+  properties?: {
+    nationality?: string[];
+    birthDate?: string[];
+    address?: string[];
+    position?: string[];
+    organization?: string[];
+    country?: string[];
+    endDate?: string[];
+    [key: string]: any;
+  };
+  addresses?: Array<{
+    full?: string;
+    country?: string;
+  }>;
+}
+
+interface ComplianceAPIResult {
+  id: string;
+  name: string;
+  type: string;
+  riskLevel: string;
+  programs?: string[];
+  remarks?: string;
+  score?: number;
+  ids?: string[];
+  addresses?: Array<{
+    street?: string;
+    city?: string;
+    country?: string;
+  }>;
+  aliases?: string[];
+  sanctions?: string[];
+}
+
+interface PEPResult {
+  id: string;
+  name: string;
+  positions?: Array<{
+    title?: string;
+    organization?: string;
+    country?: string;
+  }>;
+  properties?: {
+    position?: string[];
+    organization?: string[];
+    country?: string[];
+    endDate?: string[];
+    [key: string]: any;
+  };
+  riskLevel?: string;
+}
+
 /**
  * External Integrations Service
  * 
@@ -75,7 +135,7 @@ export class ExternalIntegrationsService {
         }),
       );
 
-      const matches = response.data.results?.map((result: any) => ({
+      const matches = response.data.results?.map((result: SanctionsAPIResult) => ({
         id: result.id,
         name: result.caption,
         score: result.score || 0,
@@ -137,14 +197,14 @@ export class ExternalIntegrationsService {
 
       const results = response.data.results || [];
       
-      const matches = results.map((result: any) => ({
+      const matches = results.map((result: ComplianceAPIResult) => ({
         name: result.name,
         type: result.type,
         programs: result.programs || [],
         remarks: result.remarks || '',
         score: result.score || 0,
-        addresses: result.addresses?.map((addr: any) => 
-          `${addr.address}, ${addr.city}, ${addr.country}`
+        addresses: result.addresses?.map((addr) => 
+          `${addr.street || ''}, ${addr.city || ''}, ${addr.country || ''}`
         ) || [],
         ids: result.ids || [],
       }));
@@ -493,7 +553,7 @@ export class ExternalIntegrationsService {
       }
 
       // Parse PEP data
-      const positions = pepMatches.map((pep: any) => ({
+      const positions = pepMatches.map((pep: PEPResult) => ({
         title: pep.properties?.position?.[0] || 'Government Official',
         organization: pep.properties?.organization?.[0] || 'Government',
         country: pep.properties?.country?.[0] || params.country || 'Unknown',

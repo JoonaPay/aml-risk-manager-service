@@ -18,12 +18,7 @@ export class AmlAlertMapper extends BaseMapper<
   }
 
   toDomain(ormEntity: AmlAlertOrmEntity): AmlAlertEntity {
-    const entity = new AmlAlertEntity({
-      id: ormEntity.id,
-      // Map your properties from snake_case to camelCase
-      // Example: propertyName: ormEntity.property_name,
-    });
-    
-    return entity;
+    // TODO: Implement proper mapping from ORM to domain entity
+    throw new Error('Not implemented');
   }
 }

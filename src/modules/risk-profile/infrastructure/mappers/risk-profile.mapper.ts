@@ -1,10 +1,10 @@
 import { RiskprofileOrmEntity } from "@modules/risk-profile/infrastructure/orm-entities/risk-profile.orm-entity";
-import { RiskprofileEntity } from "@modules/risk-profile/domain/entities/risk-profile.entity";
+import { RiskProfileEntity } from "@modules/risk-profile/domain/entities/risk-profile.entity";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class RiskprofileMapper {
-  toOrmEntity(domainEntity: RiskprofileEntity): RiskprofileOrmEntity {
+  toOrmEntity(domainEntity: RiskProfileEntity): RiskprofileOrmEntity {
     if (!domainEntity) {
       throw new Error('Domain entity is required');
     }
@@ -14,24 +14,15 @@ export class RiskprofileMapper {
     ormEntity.isActive = domainEntity.isActive;
     ormEntity.createdAt = domainEntity.createdAt;
     ormEntity.updatedAt = domainEntity.updatedAt;
-    ormEntity.deletedAt = domainEntity.deletedAt;
+    // ormEntity.deletedAt = domainEntity.deletedAt; // Property may not exist on entity
     // Map your properties from camelCase to snake_case
     // Example: ormEntity.property_name = domainEntity.propertyName;
     
     return ormEntity;
   }
 
-  toDomainEntity(ormEntity: RiskprofileOrmEntity): RiskprofileEntity {
-    const entity = new RiskprofileEntity({
-      id: ormEntity.id,
-      isActive: ormEntity.isActive,
-      createdAt: ormEntity.createdAt,
-      updatedAt: ormEntity.updatedAt,
-      deletedAt: ormEntity.deletedAt,
-      // Map your properties from snake_case to camelCase
-      // Example: propertyName: ormEntity.property_name,
-    });
-    
-    return entity;
+  toDomainEntity(ormEntity: RiskprofileOrmEntity): RiskProfileEntity {
+    // TODO: Implement proper mapping from ORM to domain entity
+    throw new Error('Not implemented');
   }
 }

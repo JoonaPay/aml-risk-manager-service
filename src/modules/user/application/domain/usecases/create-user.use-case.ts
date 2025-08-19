@@ -12,6 +12,6 @@ export class CreateUserUseCase {
       // Map command properties to entity properties
       // Example: propertyName: command.propertyName,
     });
-    return this.repository.create(entity);
+    // Repository call removed
   }
 }

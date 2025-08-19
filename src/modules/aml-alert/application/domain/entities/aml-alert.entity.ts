@@ -40,6 +40,10 @@ export interface AlertMetadata {
   matchedPatterns: string[];
   relatedAlerts: string[];
   automaticReview?: boolean;
+  escalationReason?: string;
+  escalatedFromStatus?: AlertStatus;
+  resolutionNotes?: string;
+  riskScoreUpdatedAt?: string;
 }
 
 export interface AlertContext {

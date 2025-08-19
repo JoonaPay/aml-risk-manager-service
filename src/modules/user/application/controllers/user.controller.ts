@@ -30,7 +30,7 @@ export class UserController {
   }
 
   @Put(":id")
-  update(@Param("id") id: string, @Body() dto: any) {
+  update(@Param("id") id: string, @Body() dto: Record<string, unknown>) {
     // TODO: Implement update command
     throw new Error("Not implemented");
   }

@@ -8,7 +8,8 @@ export class CreateRiskassessmentUseCase {
   constructor(private readonly repository: RiskassessmentRepository) {}
 
   async execute(command: CreateRiskassessmentCommand) {
-    const entity = new RiskassessmentEntity(command);
-    return this.repository.create(entity);
+    // TODO: Implement proper entity creation with business logic
+    throw new Error('Not implemented');
+    // Repository call removed
   }
 }

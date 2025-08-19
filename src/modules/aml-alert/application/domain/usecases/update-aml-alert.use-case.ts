@@ -8,10 +8,7 @@ export class UpdateAmlAlertUseCase {
   constructor(private readonly repository: AmlAlertRepository) {}
 
   async execute(command: UpdateAmlAlertCommand) {
-    const entity = new AmlAlertEntity({
-      // Map command properties to entity properties
-      // Example: propertyName: command.propertyName,
-    });
-    return this.repository.update(entity.id, entity);
+    // TODO: Implement proper entity update with business logic
+    throw new Error('Not implemented');
   }
 }

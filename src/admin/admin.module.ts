@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import * as Express from 'express';
 
 @Injectable()
 export class AdminJSService {
@@ -7,7 +8,7 @@ export class AdminJSService {
   
   constructor(private configService: ConfigService) {}
 
-  async setupAdminJS(app: any): Promise<void> {
+  async setupAdminJS(app: Express.Application): Promise<void> {
     // Try dynamic import for AdminJS v7 ESM modules
     const AdminJS = (await eval('import("adminjs")')).default;
     const AdminJSNestJS = await eval('import("@adminjs/nestjs")');
